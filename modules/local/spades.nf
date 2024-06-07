@@ -1,6 +1,8 @@
 process SPADES {
     tag "$meta.id"
 
+    memory "256G"
+
     conda "bioconda::spades=3.15.3"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/spades:3.15.3--h95f258a_0' :
@@ -26,6 +28,7 @@ process SPADES {
 
     if ( params.spades_fix_cpus == -1 || task.cpus == params.spades_fix_cpus )
         """
+        echo "running spades with maxmem=$maxmem"
         metaspades.py \
             $args \
             --threads "${task.cpus}" \

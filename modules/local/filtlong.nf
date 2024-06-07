@@ -1,6 +1,8 @@
 process FILTLONG {
     tag "$meta.id"
 
+    memory "128G"
+
     conda "bioconda::filtlong=0.2.0"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/filtlong:0.2.0--he513fc3_3' :
@@ -14,7 +16,12 @@ process FILTLONG {
     path "versions.yml"                                     , emit: versions
 
     script:
+
+    maxmem = task.memory.toGiga()
+
     """
+    echo "running spades with maxmem=$maxmem"
+
     filtlong \
         -1 ${short_reads_1} \
         -2 ${short_reads_2} \
