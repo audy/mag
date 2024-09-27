@@ -38,6 +38,7 @@ process PROKKA {
     """
     prokka \\
         $args \\
+        --compliant \\
         --cpus $task.cpus \\
         --prefix $prefix \\
         $proteins_opt \\
